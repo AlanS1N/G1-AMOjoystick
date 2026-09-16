@@ -1,7 +1,4 @@
 # G1-AMOjoystick
->[!WARNING]
->This is Work in Progress Project from the <a href="https://www.uvs-robotarium-lab.ca"> Robotarium Lab</a> at the University of Calgary.
-
 ![banner-UnitreeG1](https://github.com/user-attachments/assets/9e225866-34e4-4fd8-9327-32fe1c5febcc)
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/AlanS1N/G1-AMOjoystick?style=for-the-badge)
