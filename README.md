@@ -2,7 +2,8 @@
 ![banner-UnitreeG1](https://github.com/user-attachments/assets/9e225866-34e4-4fd8-9327-32fe1c5febcc)
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/AlanS1N/G1-AMOjoystick?style=for-the-badge)
-![GitHub](https://img.shields.io/github/license/AlanS1N/G1-AMOjoystick?style=for-the-badge)
+![GitHub License](https://img.shields.io/github/license/AlanS1N/G1-AMOjoystick?style=for-the-badge)
+
 
 Table of Contents
  
