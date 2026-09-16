@@ -7,94 +7,127 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/AlanS1N/G1-AMOjoystick?style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/AlanS1N/G1-AMOjoystick?style=for-the-badge)
 
-The objective of this project is to have a controller option, which should be intuitive and user friendly, to control and move a humanoid robot. Initially this project was aimed to be used with a 37-DoF robot with a joystick package as a controller in ROS. It was later said to use a G1 humanoid robot with the AMO, which is a framework developed by the UC San Diego (UCSD), released in Github on May 10th 2025. It was tested on a 29-DoF Unitree G1 humanoid robot. 
-
- Table of Contents
-
+Table of Contents
+ 
 - [Project Overview](#project-overview)
-- [Screenshots and Progress](#screenshots-and-progress)
-- [Circuit Connections](#circuit-connections)
-- [Materials](#materials)
+- [Screenshots and Demos](#screenshots-and-demos)
+- [System Architecture](#system-architecture)
+- [Environment & Tools](#environment--tools)
 - [Future Goals](#future-goals)
-
+- [Acknowledgments](#acknowledgments)
 ---
 
 # Project Overview
 
-This project focuses on the analysis of structural damages and failures caused by disasters (earthquakes, landslides, etc.) to identify operational needs for search and rescue in high-risk zones. Based on these findings, we designed and built a terrestrial mobile robot that _will serve both as a machine_ for entering and exploring without endangering first responders, _and as a tool to diagnose estructural damages_ using artificial computer vision.
+The objective of this project is to have a controller option, which should be intuitive and user friendly, to control and move a humanoid robot. Initially this project was aimed to be used with a 37-DoF robot with a joystick package as a controller in ROS. It was later said to use a G1 humanoid robot with the <a href="https://amo-humanoid.github.io"> AMO</a>, which is a framework developed by the UC San Diego (UCSD), released on May 10th 2025. It was tested on a 29-DoF Unitree G1 humanoid robot. 
 
-The system **will be** validated in a simulated disaster scenario to evaluate technical performance, exploration efficiency, and its utility in supporting rescue missions and structural diagnostics.
+AMO provides body movement optimization on humanoid robots by using RL trained neural network policies to define how it should act based on environment observations. It is built upon Python 3.9+ and can communicate with real hardware using controllers such as ROS. Also note that these policies were trained using Proximal Policy Optimization (PPO) with reward shaping.
 
-📜 Click here to <a href="https://www.overleaf.com/read/qfjzchcjjjqq#3e95bf"> VIEW the paper developed alongside the documentation in Github.</a> (WORK IN PROGRESS)
+The pipeline is first validated in MuJoCo, then migrated to Isaac Sim/Isaac Lab for higher-fidelity physics.
 
-📷 Click here to<a href="https://1024terabox.com/s/1G64Ih9HwfPtlZVFDbBaQSw"> DOWNLOAD the the DATASET used to train the vision system</a>, provided by Dr. Romeo Ballinas González.
+**AMO resources and references are listed below:**
 
-👁️ Click here to<a href="https://1024terabox.com/s/1AKwh-wiAku7Wo5QE4bYNWA"> DOWNLOAD the the VISION SYSTEM LOCAL FILES used to train the vision system.</a> (40.6 GiB)
+🌐 Click here to <a href="https://github.com/OpenTeleVision/AMO"> VIEW the official AMO repository</a> in Github.
+
+📜 Click here to<a href="https://amo-humanoid.github.io/resources/amo.pdf"> VIEW the official AMO paper published</a> by the AMO team.
+
+
+
+**Additional resources and references (Isaac Lab / Unitree):**
+
+🦿 [Isaac Lab Joint Drive Documentation](https://isaac-sim.github.io/IsaacLab/main/source/api/lab/isaaclab.sim.schemas.html?utm_source=#joint-drive)
+
+🧠 [Isaac Sim **(4.5.0)** Policy Deployment Documentation & Example](https://docs.isaacsim.omniverse.nvidia.com/4.5.0/isaac_lab_tutorials/tutorial_policy_deployment.html)
+
+📋 [Unitree Isaac Lab Official Tasks Test Repository](https://github.com/unitreerobotics/unitree_sim_isaaclab?tab=readme-ov-file)
+
+💻 [Unitree Isaac Lab Official RL Environment](https://github.com/unitreerobotics/unitree_rl_lab)
 
 **Key Features:**
-  1. Teleoperated movement.
-  2. Video transmission through RF.
-  3. Camara movement throguh head tracking.
-  4. Trained algorithm to detect and diagnose structural damages.
-  5. Rocker bogie suspension.
-
-
-# Screenshots and Progress
-
+  1. Gamepad teleoperation of the full-body humanoid via a Nintendo Switch Pro Controller (Bluetooth, handled with Pygame) — forward/lateral velocity, yaw, torso pitch/roll/yaw and height.
+  2. Whole-body stability powered by AMO: a PPO-trained, TorchScript neural network policy that keeps the 29-DoF Unitree G1 balanced while following the operator's commands.
+  3. Real-time control validation in the MuJoCo viewer before moving to a higher-fidelity simulator (Isaac Sim).
+  4. A migration pipeline that ports the AMO policy from MuJoCo into NVIDIA Isaac Sim / Isaac Lab, including USD scene setup, articulation drives, IMU integration and AMO-Isaac joint-order mapping.
+  5. Gamepad-triggered locomotion modes: toggled Sprint (B, 2× speed multiplier), toggled Crouch (Y, lowers the center of mass and clamps speed for stability), and a scripted 3-phase Jump (A: crouch → upward impulse → recovery [NOT STABLE]) — plus torso pitch/roll trim (ZL/ZR, L/R) and an arm-movement toggle (Minus).
+ 
+# Screenshots and Demos
 <table>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/5e2d9122-1db5-46ef-8b54-dcb831fe1ec0" width="500"/>
+      <img src="https://github.com/user-attachments/assets/4bd4447f-bafe-4cc1-bc16-2779ed6da940" width="500"/>
     </td>
     <td>
-      <img src="https://github.com/user-attachments/assets/11282c00-a45e-43a1-ad42-39a22b7481df" width="500"/>
+      <img src="https://github.com/user-attachments/assets/715569bb-0b04-476d-a99e-8ed4fe5f1029" width="500"/>
     </td>
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/7738de3f-24bc-4caf-8920-57d0997f2702" width="500"/>
+      <img src="https://github.com/user-attachments/assets/4c1e5dcb-9fd6-44d7-97a2-c50e4252d4d6" width="500"/>
     </td>
     <td>
-      <img src="https://github.com/user-attachments/assets/686f413e-1127-4cba-b7e1-c308003bfae1" width="500"/>
+      <img src="https://github.com/user-attachments/assets/1036b618-597f-4e62-acb6-15054ec9e86b" width="500"/>
     </td>
   </tr>
 </table>
 
-👉 [Click here to see development logs and check out the current progress](./.docs/progress.md)
+Demo videos referenced in the manual:
+- 🎮 [Gamepad control demo (MuJoCo)](https://youtu.be/7HSVvK0hRzQ)
+- ⚛️ [Gamepad control demo (IsaacSim)](https://youtu.be/8PjEr26Z97I)
+ 
+# System Architecture
+ 
+Controller communication and Simulator:
+ 
+```
+GAMEPAD (Switch Pro Controller, Bluetooth)
+        │  Pygame (axes, buttons, D-pad)
+        ▼
+ LOCOMOTION INPUT ──walk / sprint / crouch / jump──
+        │                               
+        ▼                                   
+   ENVIRONMENT  ◀────────────────────  NAVIGATION
+ (MuJoCo Viewer  /  NVIDIA Isaac Sim & Isaac Lab)
+        │
+        ▼
+ AMO POLICY (PPO-trained MLP, TorchScript)
+        │
+        ▼
+ USD POSITION DRIVES  ──▶  Unitree G1 (29-DoF)
+   (auto PD-torque fallback if drives are unavailable)
+```
+ 
+The gamepad commands are converted into a command vector (velocity, yaw, torso pose, height) that is modified by the active locomotion mode (sprint/crouch/jump) and fed into the AMO observation vector alongside the robot's proprioception (orientation, joint positions/velocities). 
 
-# Circuit Connections
-The complete circuit diagram is shown below:
-
-<img width="1045" height="965" alt="Captura desde 2026-06-09 13-00-33" src="https://github.com/user-attachments/assets/50d19934-df45-4401-9e7f-ec7f88c1c012" />
-
-# Materials
-
-The material list used is listed below:
-
-|          Name           | Units |
-|-------------------------|-------|
-| JGB37-520B              |   6   |
-| Servomotor MG995        |   1   |
-| Servomotor MG996        |   1   |
-| H Bridge BTS7960 IBT_2  |   2   |
-| GY-BNO085               |   1   |
-| ESP32 DEVKIT 30 Pines   |   2   |
-| Jetson Nano Ori         |   1   |
-| FPV Set TS5823Pro       |   1   |
-| Logitech C920 Webcam    |   1   |
-| EMAX Transporter 2      |   1   |
-| FlySky FS-i6x Control   |   1   |
-| FlySky FS-iA6 Rx        |   1   |
-| PLA Filament            |   1   |
-| TPU Filament            |   1   |
-| Perf. phenolic board    |   2   |
-| Screws(various lengths) |  ±14  |
-
+The AMO policy outputs target joint positions, which are smoothed and applied to the G1 model through Isaac Sim's USD articulation drives — falling back automatically to a per-joint PD torque controller (using AMO's stiffness/damping/torque-limit gains) if the runtime doesn't support position targets. Full block-by-block detail is in the [User Manual](https://docs.google.com/document/d/1VXFfM9Yygdm7M20YvoX3aLMf8np9Tc78E8D04FuDVUY/edit?usp=sharing).
+ 
+# Environment & Tools
+ 
+The software/hardware stack used is listed below:
+ 
+|            Component             |                      Role                       |
+|-----------------------------------|--------------------------------------------------|
+| Unitree G1 (29-DoF)                | Target humanoid robot platform                   |
+| AMO Framework (UCSD)               | RL whole-body control policies (PPO, TorchScript)|
+| MuJoCo / MuJoCo Viewer             | Real-time physics simulator for initial testing  |
+| NVIDIA Isaac Sim 4.5.0             | High-fidelity physics simulator for deployment   |
+| NVIDIA Isaac Lab                   | Robot-learning framework built on Isaac Sim      |
+| Python 3.10 (Miniconda)            | Runtime environment                              |
+| PyTorch                            | Neural network inference (TorchScript policies)  |
+| Pygame                             | Gamepad input handling                           |
+| Nintendo Switch Pro Controller     | Teleoperation input device (Bluetooth)           |
+| Ubuntu 20.04 / 22.04               | Operating system                                 |
+ 
 # Future Goals
-This project is planned to be worked on further more with other students at Tecnológico de Monterrey Campus Puebla, under the supervision of Dr. Roberto R. Flores Quintero.
+ 
+This project was a project worked on July - September 2025 during the Mitacs GRI 2025 program at the University of Calgary, in the Robotarium Lab, under the supervision of Dr. Alex Ramirez-Serrano.
+ 
+The current future goals involve:
+- ⚖️ Improving balance and stability of the AMO policy once ported to Isaac Sim's more realistic physics engine — the jump routine in particular is still unstable and falls.
+- 🔁 Testing transitions between different neural network policies (e.g. switching the AMO locomotion policy for a dedicated crawling policy).
+- ✋ Extending teleoperation to hand control, using the 5-finger hand or the Dex 3-1 hands, this last ones being the option that the G1 of the Robotarium Lab uses.
 
-Some current future goals involve:
-- 🧠 Deeper training and testing of the computer vision system.
-- 🔧 Redisign the structure to for increased stability and access to components
-- 🌡️ Adding thermal vision for detecting gases and possible life signals.
-- 🕶️ Developing a VR simulated environment.
+# Acknowledgments
+ 
+This project's Isaac Sim control bridge is built directly on top of the AMO framework and reuses its trained policies, PD gains and joint conventions:
+ 
+**AMO** — © 2025 Jialong Li, Xuxin Cheng, Tianshu Huang, Xiaolong Wang (UC San Diego), licensed under the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0). See the [official AMO repository](https://github.com/OpenTeleVision/AMO).
